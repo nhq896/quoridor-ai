@@ -33,30 +33,58 @@
       <div id="board_table_container">
         <div class="bg"></div>
         <div class="fade_box in about" id="about_box">
+          <div class="carousel" id="instruction" style="display: none">
+            <div id="close-instruction">X</div>
+            <div class="items-container">
+              <div class="mySlides fade">
+                <img src="./img/tutor/t1.png" />
+                <div class="text">
+                  Đi đến đầu bên kia nhanh hơn đối thủ của bạn
+                </div>
+              </div>
+              <div class="mySlides fade">
+                <img src="./img/tutor/t2.png" />
+                <div class="text">Có thể đi lên, xuống, trái, phải</div>
+              </div>
+              <div class="mySlides fade">
+                <img src="./img/tutor/t3.png" />
+                <div class="text">
+                  Bạn có thể dựng tường để chặn đối thủ của mình
+                </div>
+              </div>
+              <div class="mySlides fade">
+                <img src="./img/tutor/t4.png" />
+                <div class="text">
+                  Có thể nhảy qua đối thủ nếu đối thủ chặn đường
+                </div>
+              </div>
+              <div class="mySlides fade">
+                <img src="./img/tutor/t5.png" />
+                <div class="text">
+                  Chặn hoàn toàn đường đi của đối thủ là không hợp lệ
+                </div>
+              </div>
+              <div class="slide-btn">
+                <a class="prev" onclick="plusSlides(-1)">❮</a>
+                <a class="next" onclick="plusSlides(1)">❯</a>
+              </div>
+            </div>
+
+            <div class="dot-container">
+              <span class="dot" onclick="currentSlide(1)"></span>
+              <span class="dot" onclick="currentSlide(2)"></span>
+              <span class="dot" onclick="currentSlide(3)"></span>
+              <span class="dot" onclick="currentSlide(4)"></span>
+              <span class="dot" onclick="currentSlide(5)"></span>
+            </div>
+          </div>
           <div style="width: 70%; margin: auto; transform: translate(0, -10%)">
             <h1>Quoridor</h1>
             <div class="home-btn">
               <button id="about_close_button">Chơi với máy</button>
               <button id="human-mode-button">Chơi với người</button>
-              <button id="">Luật chơi và hướng dẫn</button>
+              <button id="instruction-button">Luật chơi và hướng dẫn</button>
             </div>
-            <!-- <p>
-              Quoridor hay còn gọi là cờ phong tỏa hay game chặn tường trong
-              tiếng Việt, là 1 trò chơi chiến thuật với mục tiêu là đi tới phía
-              đối diện của bàn cờ trước đối thủ của mình. Bạn có thể xem qua
-              luật chơi
-              <a
-                href="https://vi.wikipedia.org/wiki/Quoridor"
-                target="_blank"
-                rel="noopener"
-                >ở đây</a
-              >.
-            </p>
-            <p>
-              Phiên bản trò chơi này được tạo ra dựa trên thuật toán Monte Carlo
-              Tree Search.
-            </p> -->
-            <!-- <button id="about_close_button" class="close">Đóng</button> -->
           </div>
         </div>
         <div
@@ -438,27 +466,19 @@
         </table>
       </div>
       <div class="gridcontainer2">
-        <div id="number_of_left_walls_box">
-          <div>
-            <div class="pawn pawn0 symbol"></div>
-            <div class="horizontal_wall symbol"></div>
-            <div class="mul_sign_wall_num_container">
-              <div class="multiplication_sign">×</div>
-              <div class="wall_num pawn0">10</div>
-            </div>
-          </div>
-          <div>
-            <div class="pawn pawn1 symbol"></div>
-            <div class="horizontal_wall symbol"></div>
-            <div class="mul_sign_wall_num_container">
-              <div class="multiplication_sign">×</div>
-              <div class="wall_num pawn1">10</div>
-            </div>
-          </div>
-        </div>
-        <div id="message_box">
-          Lượt của bạn
+        <div class="pawn pawn0 symbol"></div>
+        <div class="player-name">
+          Player2
           <div id="progress_bar" style="width: 0%"></div>
+        </div>
+        <div class="number_of_left_walls_box">
+          <!-- <div class="horizontal_wall symbol"></div> -->
+          <!-- <div class="mul_sign_wall_num_container"> -->
+          <div style="margin-top: 16px">
+            <span>Số tường:</span>
+            <!-- <div class="multiplication_sign">×</div> -->
+            <div class="wall_num pawn0">10</div>
+          </div>
         </div>
         <div class="button_container below" style="display: none">
           <!-- <button type="button" id="cancel_button" class="button below cancel">
@@ -482,6 +502,24 @@
           <input class="hidden" type="number" id="rollout_num" />
         </div>
       </div>
+      <div class="gridcontainer3">
+        <div class="pawn pawn1 symbol"></div>
+        <div class="player-name">
+          Player1
+          <div id="progress_bar" style="width: 0%"></div>
+        </div>
+        <div class="number_of_left_walls_box">
+          <!-- <div class="horizontal_wall symbol"></div> -->
+          <!-- <div class="mul_sign_wall_num_container"> -->
+          <div style="margin-top: 16px">
+            <span>Số tường:</span>
+            <!-- <div class="multiplication_sign">×</div> -->
+            <div class="wall_num pawn1">10</div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+      <div class="gridcontainer4"><div id="message_box">....</div></div>
     </div>
     <script src="js/game.js"></script>
     <script src="js/ai.js"></script>

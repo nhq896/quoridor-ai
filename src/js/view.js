@@ -16,6 +16,7 @@ class View {
       document.getElementById("pawn1"),
     ]; // các quân cờ
     this.htmlMessageBox = document.getElementById("message_box"); // box thông điệp
+    this.playerName = document.querySelectorAll(".player-name");
     this.htmlAboutBox = document.getElementById("about_box"); // box giới thiệu
     this.htmlChooseAILevelMessageBox = document.getElementById(
       "choose_ai_level_message_box"
@@ -32,6 +33,15 @@ class View {
       this.htmlChoosePawnMessageBox.classList.remove("hidden");
     };
 
+    let closeInstruction = document.querySelector("#close-instruction");
+    let instructionBtn = document.querySelector("#instruction-button");
+    instructionBtn.onclick = () => {
+      document.querySelector("#instruction").style.display = "flex";
+    };
+    closeInstruction.onclick = () => {
+      document.querySelector("#instruction").style.display = "none";
+    };
+
     // các nút chọn level AI
     const aiLevelButton = {
       easy: document.getElementById("easy_level"),
@@ -43,13 +53,13 @@ class View {
       const x = e.target;
       if (x.id === "easy_level") {
         this.aiLevel = "Dễ";
-        this.numOfMCTSSimulations = 2500;
+        this.numOfMCTSSimulations = 5000;
       } else if (x.id === "medium_level") {
-        this.aiLevel = "Vừa";
-        this.numOfMCTSSimulations = 7500;
+        this.aiLevel = "Trung bình";
+        this.numOfMCTSSimulations = 10000;
       } else if (x.id === "hard_level") {
         this.aiLevel = "Khó";
-        this.numOfMCTSSimulations = 15000;
+        this.numOfMCTSSimulations = 20000;
       }
       // } else if (x.id === "extreme_level") {
       //   this.aiLevel = "Siêu khó";
@@ -148,6 +158,7 @@ class View {
     restartYesNoButton.no.onclick = onclickRestartYesNoButton.bind(this);
 
     const onclickAboutButton = function (e) {
+      this.htmlMessageBox.innerText = "....";
       if (this.htmlAboutBox.classList.contains("hidden")) {
         this.button.undo.disabled = true;
         this.button.redo.disabled = true;
@@ -233,6 +244,15 @@ class View {
   startNewGame(isHumanPlayerFirst, numOfMCTSSimulations) {
     this.htmlChoosePawnMessageBox.classList.add("hidden");
     this.controller.startNewGame(isHumanPlayerFirst, numOfMCTSSimulations);
+    if (this.humanMode) {
+      this.playerName[0].innerText = "Player đen";
+      this.playerName[1].innerText = "Player vàng";
+    } else {
+      this.playerName[0].innerHTML = `AI ${this.aiLevel}
+                                      <div id="progress_bar" style="width: 0%"></div>
+                                    `;
+      this.playerName[1].innerText = "Player";
+    }
   }
 
   // in ra các thông báo như lượt hoặc kết quả
@@ -282,7 +302,15 @@ class View {
     this._renderPawnPositions();
     this._renderWalls();
     if (this.game.winner !== null) {
-      if (this.game.winner.isHumanPlayer) {
+      if (this.humanMode) {
+        if (this.game.winner.index === 0) {
+          this.printGameResultMessage("Bên vàng chiến thắng!");
+          this.printMessage("Bên vàng thắng!");
+        } else {
+          this.printGameResultMessage("Bên đen chiến thắng!");
+          this.printMessage("Bên đen thắng!");
+        }
+      } else if (this.game.winner.isHumanPlayer) {
         this.printGameResultMessage("Bạn đã đánh bại AI!");
         this.printMessage("Bạn thắng!");
       } else {
@@ -500,34 +528,36 @@ class View {
 
   // điều chỉnh thanh tiến trình tính toán
   adjustProgressBar(percentage) {
-    percentage = Math.round(percentage);
-    const htmlProgressBar = document.getElementById("progress_bar");
-    if (this.progressBarIntervalId !== null) {
-      clearInterval(this.progressBarIntervalId);
-      this.progressBarIntervalId = null;
-    }
-    let width = parseInt(htmlProgressBar.style.width, 10);
-    if (width > percentage) {
-      width = 0;
-      htmlProgressBar.style.width = width + "%";
-    }
-    const frame = () => {
-      if (width >= percentage) {
+    if (!this.humanMode) {
+      percentage = Math.round(percentage);
+      const htmlProgressBar = document.getElementById("progress_bar");
+      if (this.progressBarIntervalId !== null) {
         clearInterval(this.progressBarIntervalId);
         this.progressBarIntervalId = null;
-        if (percentage >= 100) {
-          width = 0;
-          htmlProgressBar.style.width = width + "%";
-        }
-      } else {
-        width++;
+      }
+      let width = parseInt(htmlProgressBar.style.width, 10);
+      if (width > percentage) {
+        width = 0;
         htmlProgressBar.style.width = width + "%";
       }
-    };
-    if (percentage >= 100) {
-      this.progressBarIntervalId = setInterval(frame.bind(this), 1);
-    } else {
-      this.progressBarIntervalId = setInterval(frame.bind(this), 10);
+      const frame = () => {
+        if (width >= percentage) {
+          clearInterval(this.progressBarIntervalId);
+          this.progressBarIntervalId = null;
+          if (percentage >= 100) {
+            width = 0;
+            htmlProgressBar.style.width = width + "%";
+          }
+        } else {
+          width++;
+          htmlProgressBar.style.width = width + "%";
+        }
+      };
+      if (percentage >= 100) {
+        this.progressBarIntervalId = setInterval(frame.bind(this), 1);
+      } else {
+        this.progressBarIntervalId = setInterval(frame.bind(this), 10);
+      }
     }
   }
 

@@ -72,7 +72,7 @@ class Controller {
     this.setNewWorker();
     this.view.adjustProgressBar(0);
 
-    // pop và push trạng thái hiện tại của trò chơi
+    // pop và push trạng thái hiện tại của trò chơi để redo
     this.gameHistoryTrashCan.push(this.gameHistory.pop());
 
     let game = this.gameHistory.pop(); // trở về 1 lượt trước
