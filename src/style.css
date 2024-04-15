@@ -64,8 +64,8 @@ a:active {
 
 h1 {
   margin-top: 32px;
-  margin-bottom: 20px;
-  font-size: calc(2.5 * var(--font-size));
+  margin-bottom: 120px;
+  font-size: calc(4.5 * var(--font-size));
   text-transform: uppercase;
   font-weight: 700;
   text-align: center;
@@ -341,10 +341,61 @@ div.wall_num {
   }
 }
 
+.home-btn {
+  display: flex;
+  flex-flow: column;
+  gap: 16px;
+  width: 80%;
+  margin: auto;
+}
+
+.home-btn button {
+  border-radius: 12px;
+  padding: 8px 0;
+  font-size: 24px;
+}
+
+#level-btn {
+  display: flex;
+  flex-flow: column;
+  gap: 16px;
+  width: 70%;
+  box-sizing: content-box;
+}
+
+#level-btn button {
+  width: 100%;
+  padding: 8px 0;
+  border-radius: 16px;
+  font-size: 24px;
+  box-sizing: inherit;
+}
+
+#about_box {
+  margin-top: 60px;
+  max-width: 80vw;
+  min-width: 1024px;
+  position: absolute;
+  top: 45%;
+  left: 65%;
+  height: 100vh;
+  background-color: #fff !important;
+  border: 3px solid #333;
+  transform: translate(-50%, -50%);
+}
+
 #about_box p {
   margin-bottom: 16px;
   text-align: justify;
   line-height: 1.2;
+}
+
+.choose_ai_level_message_box2,
+.choose_pawn_message_box2 {
+  border: 3px solid #333;
+  background-color: #fff !important;
+  border-radius: 16px;
+  transform: translate(15%, 0);
 }
 
 #about_box,
@@ -494,6 +545,11 @@ input {
     grid-column: unset;
     flex-direction: column-reverse;
     justify-content: flex-start;
+  }
+
+  #about_box {
+    margin-top: 0;
+    height: 90vh;
   }
 }
 

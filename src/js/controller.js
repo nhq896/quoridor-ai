@@ -1,15 +1,15 @@
 "use strict";
 
 class Controller {
-  constructor(uctConst, aiDevelopMode = false) {
-    this.aiDevelopMode = aiDevelopMode;
-    // if (this.aiDevelopMode) {
-    //   console.log("AI dev mode");
+  constructor(uctConst, humanMode = false) {
+    this.humanMode = humanMode;
+    // if (this.humanMode) {
+    //   console.log("human mode");
     // }
     this.game = null;
     this.gameHistory = null;
     this.gameHistoryTrashCan = null; // cho chức năng Redo
-    this.view = new View(this, this.aiDevelopMode);
+    this.view = new View(this, this.humanMode);
     this.worker = null;
     this.numOfMCTSSimulations = null;
     this.uctConst = uctConst;
@@ -43,14 +43,14 @@ class Controller {
     this.game = game;
     this.gameHistory = [];
     this.gameHistoryTrashCan = [];
-    if (this.aiDevelopMode) {
+    if (this.humanMode) {
       this.game.board.pawns[0].isHumanPlayer = true;
       this.game.board.pawns[1].isHumanPlayer = true;
     }
     this.gameHistory.push(Game.clone(this.game));
     this.view.game = this.game;
     this.view.render();
-    if (!this.aiDevelopMode && !isHumanPlayerFirst) {
+    if (!this.humanMode && !isHumanPlayerFirst) {
       this.aiDo();
     }
   }
@@ -98,7 +98,7 @@ class Controller {
       game: this.game,
       numOfMCTSSimulations: this.numOfMCTSSimulations,
       uctConst: this.uctConst,
-      aiDevelopMode: this.aiDevelopMode,
+      humanMode: this.humanMode,
     });
   }
 }

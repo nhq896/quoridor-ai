@@ -588,12 +588,12 @@ class AI {
   constructor(
     numOfMCTSSimulations,
     uctConst,
-    aiDevelopMode = false,
+    humanMode = false,
     forWorker = false
   ) {
     this.numOfMCTSSimulations = numOfMCTSSimulations; // number
     this.uctConst = uctConst;
-    this.aiDevelopMode = aiDevelopMode; // boolean;
+    this.humanMode = humanMode; // boolean;
     this.forWorker = forWorker; // boolean;
   }
 
@@ -702,7 +702,7 @@ class AI {
       } rollouts, c=${uctConst}: ${(d1.getTime() - d0.getTime()) / 1000} sec`
     );
 
-    // if (this.aiDevelopMode) {
+    // if (this.humanMode) {
     //   console.log("descend maxWinRateChild");
     //   let node = mcts.root;
     //   let i = 1;
@@ -1225,23 +1225,8 @@ function indicesOfMin(arr) {
   return indices;
 }
 
-// hàm trả về các vị trí của max có thể bao gồm cả Infinity và NaN
+// hàm trả về các vị trí của max
 function indicesOfMax(arr) {
-  let max = -Infinity;
-  let indices = [];
-  for (let i = 0; i < arr.length; i++) {
-    if (arr[i] > max) {
-      indices = [i];
-      max = arr[i];
-    } else if (arr[i] === max) {
-      indices.push(i);
-    }
-  }
-  return indices;
-}
-
-// hàm trả về các vị trí của max nhưng không gồm Infinity và NaN
-function indicesOfSemiMax(arr) {
   let max = -Infinity;
   let indices = [];
   for (let i = 0; i < arr.length; i++) {
@@ -1254,6 +1239,21 @@ function indicesOfSemiMax(arr) {
   }
   return indices;
 }
+
+// hàm trả về các vị trí của max nhưng không gồm giá trị Infinity và NaN
+/*function indicesOfSemiMax(arr) {
+  let max = -Infinity;
+  let indices = [];
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] !== Infinity && arr[i] !== NaN && arr[i] > max) {
+      indices = [i];
+      max = arr[i];
+    } else if (arr[i] === max) {
+      indices.push(i);
+    }
+  }
+  return indices;
+}*/
 
 function randomIndex(arr) {
   return Math.floor(Math.random() * arr.length);

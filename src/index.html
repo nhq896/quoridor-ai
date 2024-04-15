@@ -8,6 +8,7 @@
     />
     <title>Quoridor AI</title>
     <link rel="stylesheet" href="./style.css" />
+    <style></style>
   </head>
   <body>
     <div class="gridcontainer0">
@@ -25,16 +26,21 @@
             class="button above about"
             style="width: 120px"
           >
-            Giới thiệu
+            Trang chủ
           </button>
         </div>
       </div>
       <div id="board_table_container">
         <div class="bg"></div>
         <div class="fade_box in about" id="about_box">
-          <div>
-            <h1>Quoridor AI</h1>
-            <p>
+          <div style="width: 70%; margin: auto; transform: translate(0, -10%)">
+            <h1>Quoridor</h1>
+            <div class="home-btn">
+              <button id="about_close_button">Chơi với máy</button>
+              <button id="human-mode-button">Chơi với người</button>
+              <button id="">Luật chơi và hướng dẫn</button>
+            </div>
+            <!-- <p>
               Quoridor hay còn gọi là cờ phong tỏa hay game chặn tường trong
               tiếng Việt, là 1 trò chơi chiến thuật với mục tiêu là đi tới phía
               đối diện của bàn cờ trước đối thủ của mình. Bạn có thể xem qua
@@ -49,21 +55,21 @@
             <p>
               Phiên bản trò chơi này được tạo ra dựa trên thuật toán Monte Carlo
               Tree Search.
-            </p>
-            <button id="about_close_button" class="close">Đóng</button>
+            </p> -->
+            <!-- <button id="about_close_button" class="close">Đóng</button> -->
           </div>
         </div>
         <div
-          class="fade_box in hidden"
+          class="fade_box in hidden choose_ai_level_message_box2"
           id="choose_ai_level_message_box"
-          style="font-size: 36px; font-weight: 500"
+          style="font-size: 36px; font-weight: 500; text-align: center"
         >
           Chọn cấp độ khó
-          <div class="button_container in_message_box">
+          <div class="button_container in_message_box" id="level-btn">
             <button class="ai_level" id="easy_level">Dễ</button>
-            <button class="ai_level" id="medium_level">Vừa</button>
+            <button class="ai_level" id="medium_level">Trung bình</button>
             <button class="ai_level" id="hard_level">Khó</button>
-            <button class="ai_level" id="extreme_level">Siêu khó</button>
+            <!-- <button class="ai_level" id="extreme_level">Siêu khó</button> -->
           </div>
           <!-- <p style="font-size: 20px">hoặc</p>
           <button
@@ -80,7 +86,7 @@
           </button> -->
         </div>
         <div
-          class="fade_box in hidden"
+          class="fade_box in hidden choose_pawn_message_box2"
           id="choose_pawn_message_box"
           style="font-size: 36px; font-weight: 500"
         >
@@ -90,7 +96,11 @@
             <div class="pawn pawn1 button" style="padding: 20px"></div>
           </div>
         </div>
-        <div class="fade_box in hidden" id="restart_message_box">
+        <div
+          class="fade_box in hidden"
+          id="restart_message_box"
+          style="font-size: 32px"
+        >
           Bạn muốn chơi bàn mới?
           <div class="button_container in_message_box">
             <button type="button" class="restart_yes_no" id="restart_no">
@@ -478,6 +488,7 @@
     <script src="js/view.js"></script>
     <script src="js/controller.js"></script>
     <script src="js/utils.js"></script>
+    <script></script>
     <noscript
       >Cần mở Javascript trên trình duyệt để có thể chơi được trò chơi</noscript
     >

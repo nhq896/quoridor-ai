@@ -1,9 +1,9 @@
 "use strict";
 
 class View {
-  constructor(controller, aiDevelopMode = false) {
+  constructor(controller, humanMode = false) {
     this.controller = controller;
-    this.aiDevelopMode = aiDevelopMode;
+    this.humanMode = humanMode;
 
     this._game = null;
     this.progressBarIntervalId = null; // Interval cho thanh tiến trình AI
@@ -16,7 +16,6 @@ class View {
       document.getElementById("pawn1"),
     ]; // các quân cờ
     this.htmlMessageBox = document.getElementById("message_box"); // box thông điệp
-
     this.htmlAboutBox = document.getElementById("about_box"); // box giới thiệu
     this.htmlChooseAILevelMessageBox = document.getElementById(
       "choose_ai_level_message_box"
@@ -26,12 +25,19 @@ class View {
     ); // box chọn quân cờ
     this.htmlRestartMessageBox = document.getElementById("restart_message_box"); // box xác nhận restart game
 
+    let humanModeBtn = document.querySelector("#human-mode-button"); //
+    humanModeBtn.onclick = () => {
+      humanMode = true;
+      controller = new Controller(0.2, humanMode);
+      this.htmlChoosePawnMessageBox.classList.remove("hidden");
+    };
+
     // các nút chọn level AI
     const aiLevelButton = {
       easy: document.getElementById("easy_level"),
       medium: document.getElementById("medium_level"),
       hard: document.getElementById("hard_level"),
-      extreme: document.getElementById("extreme_level"),
+      // extreme: document.getElementById("extreme_level"),
     };
     const onclickAILevelButton = (e) => {
       const x = e.target;
@@ -44,10 +50,11 @@ class View {
       } else if (x.id === "hard_level") {
         this.aiLevel = "Khó";
         this.numOfMCTSSimulations = 15000;
-      } else if (x.id === "extreme_level") {
-        this.aiLevel = "Siêu khó";
-        this.numOfMCTSSimulations = 30000;
       }
+      // } else if (x.id === "extreme_level") {
+      //   this.aiLevel = "Siêu khó";
+      //   this.numOfMCTSSimulations = 30000;
+      // }
       console.log(this, this.numOfMCTSSimulations);
       this.htmlChooseAILevelMessageBox.classList.add("hidden");
       this.htmlChoosePawnMessageBox.classList.remove("hidden");
@@ -55,7 +62,7 @@ class View {
     aiLevelButton.easy.onclick = onclickAILevelButton.bind(this);
     aiLevelButton.medium.onclick = onclickAILevelButton.bind(this);
     aiLevelButton.hard.onclick = onclickAILevelButton.bind(this);
-    aiLevelButton.extreme.onclick = onclickAILevelButton.bind(this);
+    // aiLevelButton.extreme.onclick = onclickAILevelButton.bind(this);
 
     // chọn quân cờ
     const pawn0Button = document.getElementsByClassName("pawn pawn0 button")[0];
@@ -67,6 +74,13 @@ class View {
       } else if (x.classList.contains("pawn1")) {
         this.startNewGame(false, this.numOfMCTSSimulations);
       }
+      this.htmlAboutBox.classList.add("hidden");
+      this.htmlChooseAILevelMessageBox.classList.remove(
+        "choose_ai_level_message_box2"
+      );
+      this.htmlChoosePawnMessageBox.classList.remove(
+        "choose_pawn_message_box2"
+      );
     };
     pawn0Button.onclick = onclickPawnButton.bind(this);
     pawn1Button.onclick = onclickPawnButton.bind(this);
@@ -121,7 +135,11 @@ class View {
       const x = e.target;
       this.htmlRestartMessageBox.classList.add("hidden");
       if (x.id === "restart_yes") {
-        this.htmlChooseAILevelMessageBox.classList.remove("hidden");
+        if (humanMode == true) {
+          this.htmlChoosePawnMessageBox.classList.remove("hidden");
+        } else {
+          this.htmlChooseAILevelMessageBox.classList.remove("hidden");
+        }
       } else {
         this.enableUndoRedoButtonIfNecessary();
       }
@@ -136,7 +154,11 @@ class View {
         View.removePreviousFadeInoutBox();
         this.htmlRestartMessageBox.classList.add("hidden");
         this.htmlChooseAILevelMessageBox.classList.add("hidden");
+        this.htmlChooseAILevelMessageBox.classList.add(
+          "choose_ai_level_message_box2"
+        );
         this.htmlChoosePawnMessageBox.classList.add("hidden");
+        this.htmlChoosePawnMessageBox.classList.add("choose_pawn_message_box2");
         this.htmlAboutBox.classList.remove("hidden");
       } else {
         this.htmlAboutBox.classList.add("hidden");
@@ -147,12 +169,19 @@ class View {
     aboutButton.onclick = onclickAboutButton.bind(this);
 
     const onclickCloseButtonInAbout = function (e) {
-      this.htmlAboutBox.classList.add("hidden");
+      humanMode = false;
+      controller = new Controller(0.2, humanMode);
+      this.htmlChooseAILevelMessageBox.classList.remove("hidden");
+      // this.htmlAboutBox.classList.add("hidden");
       this.enableUndoRedoButtonIfNecessary();
     };
     const onclickCloseButtonInAboutFirst = function (e) {
-      this.htmlAboutBox.classList.add("hidden");
+      // this.htmlAboutBox.classList.add("hidden");
+      humanMode = false;
+      controller = new Controller(0.2, humanMode);
       this.htmlChooseAILevelMessageBox.classList.remove("hidden");
+      // let grid1 = document.querySelector(".gridcontainer1");
+      // grid1.style.display = "grid";
       closeButtonInAbout.onclick = onclickCloseButtonInAbout.bind(this);
     };
     const closeButtonInAbout = document.getElementById("about_close_button");
@@ -261,7 +290,15 @@ class View {
         this.printMessage("AI thắng!");
       }
     } else {
-      if (this.game.pawnOfTurn.isHumanPlayer) {
+      if (this.humanMode) {
+        this._renderValidNextPawnPositions();
+        this._renderValidNextWalls();
+        if (this.game.pawnOfTurn.index === 0) {
+          this.printMessage("Lượt bên vàng");
+        } else {
+          this.printMessage("Lượt bên đen");
+        }
+      } else if (this.game.pawnOfTurn.isHumanPlayer) {
         this._renderValidNextPawnPositions();
         this._renderValidNextWalls();
         this.printMessage("Lượt của bạn");

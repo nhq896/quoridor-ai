@@ -15,7 +15,7 @@ onmessage = function (event) {
     const ai = new AI(
       event.data.numOfMCTSSimulations,
       event.data.uctConst,
-      event.data.aiDevelopMode,
+      event.data.humanMode,
       true
     );
     const move = ai.chooseNextMove(game);

@@ -26,10 +26,10 @@ document.addEventListener(
   }
 );
 
-/* dev mode */
-const aiDevelopMode = false;
-const controller = new Controller(0.2, aiDevelopMode);
-//   if (aiDevelopMode) {
+/* human mode / dev mode */
+var humanMode = false;
+let controller = new Controller(0.2, humanMode);
+//   if (humanMode) {
 //     const uctConstInput = document.getElementById("uctConst");
 //     const rolloutNumInput = document.getElementById("rollout_num");
 //     uctConstInput.classList.remove("hidden");
