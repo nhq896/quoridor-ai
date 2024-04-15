@@ -235,7 +235,7 @@ div.pawn.shadow {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: var(--font-size);
+  font-size: 20px;
   text-align: center;
   margin-top: 32px;
   vertical-align: middle;
@@ -501,7 +501,7 @@ button.close {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--font-size);
+  font-size: 24px;
   text-align: center;
   text-decoration: none;
 }
@@ -583,7 +583,7 @@ input {
     grid-template-rows: 1fr;
     margin-top: 24px;
     text-align: center;
-    font-size: 24px;
+    font-size: 28px;
   }
 
   .button_container.below {

@@ -51,7 +51,9 @@ class View {
     };
     closeModal2.onclick = () => {
       this.htmlChoosePawnMessageBox.classList.add("hidden");
-      this.htmlChooseAILevelMessageBox.classList.remove("hidden");
+      if (!humanMode) {
+        this.htmlChooseAILevelMessageBox.classList.remove("hidden");
+      }
     };
 
     // các nút chọn level AI
