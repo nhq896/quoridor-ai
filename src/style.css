@@ -415,6 +415,7 @@ div.wall_num {
 #choose_ai_level_message_box,
 #choose_pawn_message_box,
 #restart_message_box,
+#return_home_message_box,
 #game_result_message_box,
 #note_message_box {
   /* background-color: rgba(0, 81, 255, 0.85); */
@@ -467,6 +468,7 @@ button.update,
 button.ai_level,
 button.close,
 button.restart_yes_no,
+button.return_home_yes_no,
 button#human-mode {
   display: inline-block;
   height: calc(2 * var(--font-size));
@@ -769,7 +771,7 @@ input {
   }
 }
 
-#close-instruction {
+.close-modal {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -791,6 +793,15 @@ input {
   opacity: 0.9;
 }
 
-#close-instruction:hover {
+.close-modal:hover {
+  opacity: 1;
+}
+
+#close-modal1,
+#close-modal2 {
+  top: 0;
+  right: 0;
+  transform: translate(30%, -30%);
+  z-index: 50;
   opacity: 1;
 }

@@ -34,7 +34,7 @@
         <div class="bg"></div>
         <div class="fade_box in about" id="about_box">
           <div class="carousel" id="instruction" style="display: none">
-            <div id="close-instruction">X</div>
+            <div class="close-modal" id="close-instruction">X</div>
             <div class="items-container">
               <div class="mySlides fade">
                 <img src="./img/tutor/t1.png" />
@@ -92,6 +92,7 @@
           id="choose_ai_level_message_box"
           style="font-size: 36px; font-weight: 500; text-align: center"
         >
+          <div class="close-modal" id="close-modal1">X</div>
           Chọn cấp độ khó
           <div class="button_container in_message_box" id="level-btn">
             <button class="ai_level" id="easy_level">Dễ</button>
@@ -118,6 +119,7 @@
           id="choose_pawn_message_box"
           style="font-size: 36px; font-weight: 500"
         >
+          <div class="close-modal" id="close-modal2">X</div>
           Chọn màu quân cờ của bạn<br />(Quân vàng đi trước)
           <div class="button_container in_message_box">
             <div class="pawn pawn0 button" style="padding: 20px"></div>
@@ -136,6 +138,29 @@
             </button>
             <button type="button" class="restart_yes_no" id="restart_yes">
               Bắt đầu
+            </button>
+          </div>
+        </div>
+        <div
+          class="fade_box in hidden"
+          id="return_home_message_box"
+          style="font-size: 32px"
+        >
+          Bạn muốn về trang chủ?
+          <div class="button_container in_message_box">
+            <button
+              type="button"
+              class="return_home_yes_no"
+              id="return_home_no"
+            >
+              Hủy
+            </button>
+            <button
+              type="button"
+              class="return_home_yes_no"
+              id="return_home_yes"
+            >
+              Đúng
             </button>
           </div>
         </div>

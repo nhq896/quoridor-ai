@@ -25,6 +25,9 @@ class View {
       "choose_pawn_message_box"
     ); // box chọn quân cờ
     this.htmlRestartMessageBox = document.getElementById("restart_message_box"); // box xác nhận restart game
+    this.htmlReturnHomeMessageBox = document.getElementById(
+      "return_home_message_box"
+    );
 
     let humanModeBtn = document.querySelector("#human-mode-button"); //
     humanModeBtn.onclick = () => {
@@ -35,11 +38,20 @@ class View {
 
     let closeInstruction = document.querySelector("#close-instruction");
     let instructionBtn = document.querySelector("#instruction-button");
+    let closeModal1 = document.querySelector("#close-modal1");
+    let closeModal2 = document.querySelector("#close-modal2");
     instructionBtn.onclick = () => {
       document.querySelector("#instruction").style.display = "flex";
     };
     closeInstruction.onclick = () => {
       document.querySelector("#instruction").style.display = "none";
+    };
+    closeModal1.onclick = () => {
+      this.htmlChooseAILevelMessageBox.classList.add("hidden");
+    };
+    closeModal2.onclick = () => {
+      this.htmlChoosePawnMessageBox.classList.add("hidden");
+      this.htmlChooseAILevelMessageBox.classList.remove("hidden");
     };
 
     // các nút chọn level AI
@@ -127,6 +139,9 @@ class View {
 
     const restartButton = document.getElementById("restart_button");
     const onclickRestartButton = function (e) {
+      if (!this.htmlReturnHomeMessageBox.classList.contains("hidden")) {
+        this.htmlReturnHomeMessageBox.classList.add("hidden");
+      }
       this.button.undo.disabled = true;
       this.button.redo.disabled = true;
       View.removePreviousFadeInoutBox();
@@ -157,9 +172,32 @@ class View {
     restartYesNoButton.yes.onclick = onclickRestartYesNoButton.bind(this);
     restartYesNoButton.no.onclick = onclickRestartYesNoButton.bind(this);
 
+    const returnHomeYesNoButton = {
+      yes: document.getElementById("return_home_yes"),
+      no: document.getElementById("return_home_no"),
+    };
+    const onclickReturnHomeYesNoButton = function (e) {
+      const x = e.target;
+      this.htmlReturnHomeMessageBox.classList.add("hidden");
+      if (x.id === "return_home_yes") {
+        this.htmlAboutBox.classList.remove("hidden");
+      } else {
+        this.enableUndoRedoButtonIfNecessary();
+      }
+    };
+    returnHomeYesNoButton.yes.onclick = onclickReturnHomeYesNoButton.bind(this);
+    returnHomeYesNoButton.no.onclick = onclickReturnHomeYesNoButton.bind(this);
+
     const onclickAboutButton = function (e) {
       this.htmlMessageBox.innerText = "....";
-      if (this.htmlAboutBox.classList.contains("hidden")) {
+      this.htmlReturnHomeMessageBox.classList.remove("hidden");
+      if (!this.htmlRestartMessageBox.classList.contains("hidden")) {
+        this.htmlRestartMessageBox.classList.add("hidden");
+      }
+      if (
+        this.htmlAboutBox.classList.contains("hidden") &&
+        this.htmlReturnHomeMessageBox.classList.contains("hidden")
+      ) {
         this.button.undo.disabled = true;
         this.button.redo.disabled = true;
         View.removePreviousFadeInoutBox();
@@ -224,6 +262,11 @@ class View {
       symbolPawnList[1].classList.add("pawn1");
       wallNumList[1].classList.add("pawn1");
       this.htmlWallNum = { pawn0: wallNumList[0], pawn1: wallNumList[1] };
+
+      if (this.humanMode) {
+        this.playerName[0].innerText = "Player vàng";
+        this.playerName[1].innerText = "Player đen";
+      }
     } else {
       symbolPawnList[0].classList.remove("pawn0");
       wallNumList[0].classList.remove("pawn0");
@@ -235,6 +278,11 @@ class View {
       symbolPawnList[1].classList.add("pawn0");
       wallNumList[1].classList.add("pawn0");
       this.htmlWallNum = { pawn0: wallNumList[1], pawn1: wallNumList[0] };
+
+      if (this.humanMode) {
+        this.playerName[0].innerText = "Player đen";
+        this.playerName[1].innerText = "Player vàng";
+      }
     }
   }
   get game() {
@@ -244,13 +292,10 @@ class View {
   startNewGame(isHumanPlayerFirst, numOfMCTSSimulations) {
     this.htmlChoosePawnMessageBox.classList.add("hidden");
     this.controller.startNewGame(isHumanPlayerFirst, numOfMCTSSimulations);
-    if (this.humanMode) {
-      this.playerName[0].innerText = "Player đen";
-      this.playerName[1].innerText = "Player vàng";
-    } else {
+    if (!this.humanMode) {
       this.playerName[0].innerHTML = `AI ${this.aiLevel}
-                                      <div id="progress_bar" style="width: 0%"></div>
-                                    `;
+                                    <div id="progress_bar" style="width: 0%"></div>
+                                  `;
       this.playerName[1].innerText = "Player";
     }
   }
