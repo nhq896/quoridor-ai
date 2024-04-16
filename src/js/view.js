@@ -648,29 +648,6 @@ class View {
     }
   }
 
-  /*static cancelWallShadows() {
-    let previousWallShadows = document.getElementsByClassName(
-      "horizontal_wall shadow"
-    );
-    while (previousWallShadows.length !== 0) {
-      previousWallShadows[0].remove();
-    }
-    previousWallShadows = document.getElementsByClassName(
-      "vertical_wall shadow"
-    );
-    while (previousWallShadows.length !== 0) {
-      previousWallShadows[0].remove();
-    }
-  }*/
-
-  /* static cancelPawnClick() {
-    let pawnShadows = document.getElementsByClassName("pawn shadow");
-    for (let i = 0; i < pawnShadows.length; i++) {
-      pawnShadows[i].classList.remove("clicked");
-      pawnShadows[i].classList.remove("hidden");
-    }
-  }*/
-
   // xóa box thông báo đã show trước đó
   static removePreviousFadeInoutBox() {
     let previousBoxes;

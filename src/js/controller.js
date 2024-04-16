@@ -55,6 +55,7 @@ class Controller {
     }
   }
 
+  // thực hiện nước đi và kiểm tra nước đi hợp lệ không
   doMove(move) {
     if (this.game.doMove(move, true)) {
       this.gameHistory.push(Game.clone(this.game));
@@ -75,10 +76,10 @@ class Controller {
     // pop và push trạng thái hiện tại của trò chơi để redo
     this.gameHistoryTrashCan.push(this.gameHistory.pop());
 
-    let game = this.gameHistory.pop(); // trở về 1 lượt trước
+    let game = this.gameHistory.pop(); // undo 1 lượt
     while (!game.pawnOfTurn.isHumanPlayer) {
       this.gameHistoryTrashCan.push(game);
-      game = this.gameHistory.pop(); // trở về 1 lượt trước lần nữa
+      game = this.gameHistory.pop(); // undo 1 lượt nữa
     }
     this.game = game;
     this.gameHistory.push(Game.clone(this.game));
@@ -87,12 +88,24 @@ class Controller {
   }
 
   redo() {
-    this.game = this.gameHistoryTrashCan.pop();
+    if (!this.humanMode) {
+      this.gameHistory.push(this.gameHistoryTrashCan.pop());
+
+      let game = this.gameHistoryTrashCan.pop(); // redo 1 lượt
+      while (!game.pawnOfTurn.isHumanPlayer) {
+        this.gameHistory.push(game);
+        game = this.gameHistoryTrashCan.pop(); // redo 1 lượt nữa
+      }
+      this.game = game;
+    } else {
+      this.game = this.gameHistoryTrashCan.pop();
+    }
     this.gameHistory.push(Game.clone(this.game));
     this.view.game = this.game;
     this.view.render();
   }
 
+  // gọi AI thực hiện tính toán
   aiDo() {
     this.worker.postMessage({
       game: this.game,

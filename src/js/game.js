@@ -344,59 +344,60 @@ class Game {
     }
   }
 
-  // this method checks if the pawnMoveTuple of the pawn of this turn is valid against walls on the board and the board size.
-  // this method do not check the validity against the other pawn's position.
+  // kiểm tra bước di chuyển có hợp lệ với vị trí hiện tại không
   isValidNextMoveNotConsideringOtherPawn(currentPosition, pawnMoveTuple) {
     if (pawnMoveTuple[0] === -1 && pawnMoveTuple[1] === 0) {
-      // up
+      // trên
       return (
         currentPosition.row > 0 &&
         this.openWays.upDown[currentPosition.row - 1][currentPosition.col]
       );
     }
     if (pawnMoveTuple[0] === 1 && pawnMoveTuple[1] === 0) {
-      // down
+      // dưới
       return (
         currentPosition.row < 8 &&
         this.openWays.upDown[currentPosition.row][currentPosition.col]
       );
     } else if (pawnMoveTuple[0] === 0 && pawnMoveTuple[1] === -1) {
-      // left
+      // trái
       return (
         currentPosition.col > 0 &&
         this.openWays.leftRight[currentPosition.row][currentPosition.col - 1]
       );
     } else if (pawnMoveTuple[0] === 0 && pawnMoveTuple[1] === 1) {
-      // right
+      // phải
       return (
         currentPosition.col < 8 &&
         this.openWays.leftRight[currentPosition.row][currentPosition.col]
       );
     } else {
-      throw "pawnMoveTuple should be one of [1, 0], [-1, 0], [0, 1], [0, -1]";
+      throw "bước di chuyển không hợp lệ";
     }
   }
 
+  // kiểm tra bước di chuyển có bị chặn bởi tường hay quân cờ không
   isOpenWay(currentRow, currentCol, pawnMoveTuple) {
     if (pawnMoveTuple[0] === -1 && pawnMoveTuple[1] === 0) {
-      // up
+      // trên
       return currentRow > 0 && this.openWays.upDown[currentRow - 1][currentCol];
     } else if (pawnMoveTuple[0] === 1 && pawnMoveTuple[1] === 0) {
-      //down
+      // dưới
       return currentRow < 8 && this.openWays.upDown[currentRow][currentCol];
     } else if (pawnMoveTuple[0] === 0 && pawnMoveTuple[1] === -1) {
-      // left
+      // trái
       return (
         currentCol > 0 && this.openWays.leftRight[currentRow][currentCol - 1]
       );
     } else if (pawnMoveTuple[0] === 0 && pawnMoveTuple[1] === 1) {
-      // right
+      // phải
       return currentCol < 8 && this.openWays.leftRight[currentRow][currentCol];
     } else {
-      throw "pawnMoveTuple should be one of [1, 0], [-1, 0], [0, 1], [0, -1]";
+      throw "bước di chuyển không hợp lệ";
     }
   }
 
+  // di chuyển quân cờ
   movePawn(row, col, needCheck = false) {
     if (needCheck && this.validNextPositions[row][col] !== true) {
       return false;
@@ -473,14 +474,15 @@ class Game {
   }
 
   testIfConnectedOnTwoPointsForHorizontalWall(row, col) {
-    // if left side is connected with border of board or other wall
+    // nếu đầu bên trái của bức tường ngang kết nối với cạnh bàn cờ hoặc 1 bức tường khác
     const left =
       col === 0 ||
       this.testIfAdjecentToOtherWallForHorizontalWallLeft(row, col);
-    // if right side is connected with border of board or other wall
+    // nếu đầu bên phải của bức tường ngang kết nối với cạnh bàn cờ hoặc 1 bức tường khác
     const right =
       col === 7 ||
       this.testIfAdjecentToOtherWallForHorizontalWallRight(row, col);
+    // nếu điểm giữa của bức tường ngang kết nối với cạnh bàn cờ hoặc 1 bức tường khác
     const middle = this.testIfAdjecentToOtherWallForHorizontalWallMiddle(
       row,
       col
@@ -550,14 +552,16 @@ class Game {
     return false;
   }
 
+  // kiểm tra hai đầu của bức tường dọc có kết nối với bức tường nào không
   testIfConnectedOnTwoPointsForVerticalWall(row, col) {
-    // if top side is connected with border of board or other wall
+    // nếu đầu trên của bức tường dọc kết nối với cạnh bàn cờ hoặc 1 bức tường khác
     const top =
       row === 0 || this.testIfAdjecentToOtherWallForVerticalWallTop(row, col);
-    // if bottom side is connected with border of board or other wall
+    // nếu đầu dưới của bức tường dọc kết nối với cạnh bàn cờ hoặc 1 bức tường khác
     const bottom =
       row === 7 ||
       this.testIfAdjecentToOtherWallForVerticalWallBottom(row, col);
+    // nếu điểm giữa của bức tường dọc kết nối với cạnh bàn cờ hoặc 1 bức tường khác
     const middle = this.testIfAdjecentToOtherWallForVerticalWallMiddle(
       row,
       col
@@ -565,8 +569,10 @@ class Game {
     return (top && bottom) || (bottom && middle) || (middle && top);
   }
 
+  // kiểm tra nếu tồn tại đường tới đích sau khi đặt tường ngang
   testIfExistPathsToGoalLinesAfterPlaceHorizontalWall(row, col) {
-    // wall which does not connected on two points do not block path.
+    // nếu khi đặt tường ngang mà hai điểm của bức tường không kết nối với tường khác
+    // thì chắc chắn hợp lệ
     if (!this.testIfConnectedOnTwoPointsForHorizontalWall(row, col)) {
       return true;
     }
@@ -578,8 +584,10 @@ class Game {
     return result;
   }
 
+  // kiểm tra nếu tồn tại đường tới đích sau khi đặt tường dọc
   testIfExistPathsToGoalLinesAfterPlaceVerticalWall(row, col) {
-    // wall which does not connected on two points do not block path.
+    // nếu khi đặt tường dọc mà hai điểm đầu của bức tường không kết nối với tường khác
+    // thì chắc chắn hợp lệ
     if (!this.testIfConnectedOnTwoPointsForVerticalWall(row, col)) {
       return true;
     }
@@ -591,6 +599,7 @@ class Game {
     return result;
   }
 
+  // kiểm tra nước đi tiếp theo có hợp lệ không
   isPossibleNextMove(move) {
     const movePawnTo = move[0];
     const placeHorizontalWallAt = move[1];
@@ -610,6 +619,7 @@ class Game {
     }
   }
 
+  // cập nhật các bức tường hợp lệ tiếp theo sau khi đặt tường ngang
   adjustProbableValidNextWallForAfterPlaceHorizontalWall(row, col) {
     if (row >= 1) {
       this._probableNextWalls.vertical[row - 1][col] = true;
@@ -651,6 +661,7 @@ class Game {
     }
   }
 
+  // cập nhật các bức tường hợp lệ tiếp theo sau khi đặt tường dọc
   adjustProbableValidNextWallForAfterPlaceVerticalWall(row, col) {
     if (col >= 1) {
       this._probableNextWalls.horizontal[row][col - 1] = true;
@@ -692,6 +703,7 @@ class Game {
     }
   }
 
+  // thực hiện đặt tường ngang, nếu hợp lệ trả về true
   placeHorizontalWall(row, col, needCheck = false) {
     if (
       needCheck &&
@@ -717,6 +729,7 @@ class Game {
     return true;
   }
 
+  // thực hiện đặt tường dọc, nếu hợp lệ trả về true
   placeVerticalWall(row, col, needCheck = false) {
     if (
       needCheck &&
@@ -742,12 +755,11 @@ class Game {
     return true;
   }
 
-  // only one argument must be provided by 2-element array.
-  // other two arguments must be null.
+  // thực hiện 1 nước đi được truyền vào và  (di chuyển quân cờ hoặc đặt tường)
   doMove(move, needCheck = false) {
-    if (this.winner !== null) {
-      console.log("error: doMove after already terminal......"); // for debug
-    }
+    // if (this.winner !== null) {
+    //   console.log("đã có winner");
+    // }
     const movePawnTo = move[0];
     const placeHorizontalWallAt = move[1];
     const placeVerticalWallAt = move[2];
@@ -768,6 +780,7 @@ class Game {
     }
   }
 
+  // kiểm tra xem cả 2 bên có tồn tại đường đi tới đích không
   _existPathsToGoalLines() {
     return (
       this._existPathToGoalLineFor(this.pawnOfTurn) &&
@@ -775,8 +788,7 @@ class Game {
     );
   }
 
-  // Intuitively DFS would be better than BFS on this function.
-  // Tested somewhat between DFS and BFS for checking intuition.
+  // dùng thuật toán DFS để kiểm tra quân cờ có đường đi tới đích không
   _existPathToGoalLineFor(pawn) {
     const visited = create2DArrayInitializedTo(9, 9, false);
     const pawnMoveTuples = [MOVE_UP, MOVE_LEFT, MOVE_RIGHT, MOVE_DOWN];
@@ -805,6 +817,7 @@ class Game {
     );
   }
 
+  // đặt tường cạnh quân cờ
   static setWallsBesidePawn(wall2DArrays, pawn) {
     const row = pawn.position.row;
     const col = pawn.position.col;
